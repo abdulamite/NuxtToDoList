@@ -8,7 +8,6 @@
             <ol>
                 <li v-for="thing in item_list" :class="{completed: thing.isDone}">
                     <input type="checkbox" :id=thing.id v-model="thing.isDone" :value=thing.isDone />
-                    <label id="checklabel" :for=thing.id></label>
                     <span>{{ thing.whatToDo }}</span>
                     <button v-on:click=remove_item(thing)></button>
                  </li>
@@ -130,11 +129,6 @@ import ListItem from '~/components/ListItem.vue'
     text-align: left;
     padding-left: 1rem;
     font-weight: bold;
-}
-
-input[type="checkbox"]{
-  visibility:hidden;
-  display:none;
 }
 
 #checklabel{
