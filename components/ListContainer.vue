@@ -32,58 +32,58 @@ var itemListStorage = {
   },
   save: function (todos) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
-    console.log('Item Saved');
-    console.log(localStorage);
   }
 }
 
-
-
-    export default {
-        components:{
-            ListItem
+export default {
+    components:{
+        ListItem
+    },
+    data(){
+        return{
+            item: '',
+            item_list: itemListStorage.fetch()
+        }
+    },
+    watch: {
+        item_list: {
+        handler: function (todos) {
+            itemListStorage.save(todos)
         },
-        data(){
-            return{
-                item: '',
-                item_list: itemListStorage.fetch()
+        deep: true
+        }
+    },
+    methods:{
+        addItem:function(){
+            const value = this.item && this.item.trim()
+            if (!value) {
+                return
+            }
+            if(this.item){
+                this.item_list.push({
+                    id: '_' + Math.random().toString(36).substr(2, 9),
+                    isDone:false,
+                    whatToDo:value
+                });
+                this.item = '';
+            }else{
+                console.log('You must enter a valid item');
             }
         },
-        watch: {
-            item_list: {
-            handler: function (todos) {
-                itemListStorage.save(todos)
-            },
-            deep: true
-         }
-       },
-        methods:{
-            addItem:function(){
-                if(this.item){
-                    this.item_list.push({
-                        id: '_' + Math.random().toString(36).substr(2, 9),
-                        isDone:false,
-                        whatToDo:this.item.trim()
-                    });
-                    this.item = '';
-                }else{
-                    console.log('You must enter a valid item');
-                }
-            },
-            complete_item:function(task){
-                console.log('Hello World');
-            },
-            clear_items:function(){
-                this.item = ''
-                this.item_list = [];
-            },
-            remove_item:function(task){
-                this.item_list.splice(this.item_list.indexOf(task), 1);
-            }
+        complete_item:function(task){
+            console.log('Hello World');
         },
+        clear_items:function(){
+            this.item = ''
+            this.item_list = [];
+        },
+        remove_item:function(task){
+            this.item_list.splice(this.item_list.indexOf(task), 1);
+        }
+    },
 
-        
-    }
+    
+}
 </script>
 
 <style scoped>
