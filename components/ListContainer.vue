@@ -19,6 +19,25 @@
 <script>
 import ListItem from '~/components/ListItem.vue'
 
+var STORAGE_KEY = 'todos-vuejs-2.0'
+// code sourced from https://vuejs.org/v2/examples/todomvc.html originally written by Even You
+var itemListStorage = {
+  fetch: function () {
+    var todos = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]')
+    todos.forEach(function (todo, index) {
+      todo.id = index
+    })
+    itemListStorage.uid = todos.length
+    return todos
+  },
+  save: function (todos) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
+    console.log('Item Saved');
+    console.log(localStorage);
+  }
+}
+
+
 
     export default {
         components:{
@@ -27,9 +46,17 @@ import ListItem from '~/components/ListItem.vue'
         data(){
             return{
                 item: '',
-                item_list: []
+                item_list: itemListStorage.fetch()
             }
         },
+        watch: {
+            item_list: {
+            handler: function (todos) {
+                itemListStorage.save(todos)
+            },
+            deep: true
+         }
+       },
         methods:{
             addItem:function(){
                 if(this.item){
